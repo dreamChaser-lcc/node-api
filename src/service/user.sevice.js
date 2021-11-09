@@ -10,7 +10,7 @@ class UserService {
       .catch((err) => console.log(err));
     return res ? res.dataValues : null;
   }
-  // 查询是否存在行   
+  // 查询是否存在行
   async findUserInfo({ id, user_name, password, is_admin }) {
     const whereObj = {};
     id && Object.assign(whereObj, { id });
@@ -22,6 +22,17 @@ class UserService {
       where: whereObj,
     });
     return res ? res.dataValues : null;
+  }
+  // 修改用户信息
+  async updateById({ id, user_name, password, is_admin }) {
+    const whereOpt = { id };
+    const newUser = {};
+    user_name && Object.assign(newUser, { user_name });
+    password && Object.assign(newUser, { password });
+    is_admin && Object.assign(newUser, { is_admin });
+    const res = await userModel.update(newUser, { where: whereOpt });
+    console.log(newUser,whereOpt,res)
+    return res[0] > 0 ? true : false;
   }
 }
 module.exports = new UserService();

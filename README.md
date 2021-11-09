@@ -4,7 +4,12 @@ nodemon 监听文件改变，并重启服务器
 ## 环境变量配置
 dotenv 读取.env文件下的配置，加载到process.env中，通过process.env可以访问到配置变量
 ## 请求体解析
-koa-body 解析请求体request-body,将请求数据写入ctx.request.body,同中间件方法使用
+- koa-body 解析请求体request-body,将请求数据写入ctx.request.body,同中间件方法使用
+- 其中options可配置上传文件等，详细看src/app/index.js
+## 上传图片回显、静态资源回显，图片或其他文件
+- koa-static 
+- 详细配置src/app/index.js
+- 回显路径:静态资源路径,例如http://localhost:8080/upload_d2e36932b98be228b4338b989bdc2c9c.jpg
 
 ## 数据库操作
 sequelize ORM操作库
@@ -20,6 +25,14 @@ mysql2或其他数据库驱动
 - v6当前引擎 W最低支持mysql 5.7
 ## 密码加密
 becryptjs
+## 颁发token
+jsonwebtoken
+扩展 JWT(JSON WEB TOKEN)
+- header 头部
+- payload 载荷
+- signature 签名
+## koa-parameter
+参数校验
 
 # 目录结构注解
 目录及文件结构分明是为了更好的解耦
@@ -37,3 +50,10 @@ becryptjs
 | middleWare    | 中间件的拆分，针对controller业务多且可复用时，进行解耦         |
 | constant      | 常量，存放异常处理返回常量或者其他                             |
 | errHandler.js | 异常信息统一处理文件，统一返回app.on处理                       |
+
+# 技巧
+## 自动加载路由中间件
+- 通过fs模块将模块遍历导入到Router
+- 并导出模块
+- 详细查看文件src/router/index.js
+  
