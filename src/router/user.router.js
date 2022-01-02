@@ -31,5 +31,12 @@ router.post(
 );
 router.post("/login", userValidator, verifyLogin, login);
 router.post("/update", userValidator, cryptPassword, auth, updatePassword);
+router.post("/auth/token", auth, async (ctx, next) => {
+  ctx.body = {
+    code: "00000",
+    message: "验证token成功",
+  };
+  await next();
+});
 
 module.exports = router;

@@ -40,11 +40,14 @@ class UserController {
       // 获取用户信息
       const { password, ...res } = await findUserInfo({ user_name });
       // res即payload 包含信息（id,user_name,is_admin）
-      const result = jwt.sign(res, JWT_SECRET, { expiresIn: "1D" });
+      const token = jwt.sign(res, JWT_SECRET, { expiresIn: "1D" });
       ctx.body = {
         code: "00000",
         message: "用户登录成功",
-        result: result,
+        result: {
+          username:user_name,
+          token
+        },
       };
     } catch (err) {
       console.error("用户登录失败", err);
