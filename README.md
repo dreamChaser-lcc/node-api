@@ -1,3 +1,11 @@
+
+# 在线Api文档（ApiPost生成）
+[在线文档](https://console-docs.apipost.cn/cover.html?url=c5f0790a1226540f&salt=c7fd6d57d6a03d7d)
+
+# 部署遇到的问题
+- .env中的变量数据库密码`MYSQL_PASSWORD`不能命名为`MYSQL_PWD`,否则报错
+- 当前node服务端口默认 8006
+
 # npm包作用注解
 ## dev调试工具
 nodemon 监听文件改变，并重启服务器
@@ -56,4 +64,4 @@ jsonwebtoken
 - 通过fs模块将模块遍历导入到Router
 - 并导出模块
 - 详细查看文件src/router/index.js
-  
+
