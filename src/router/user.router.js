@@ -12,6 +12,11 @@ const {
   koaBodyTest,
   updatePassword,
 } = require("../controller/user.controller");
+const {
+  collectLoginLog,
+  getCollectLog
+} = require('../controller/log.controller')
+
 // 中间件拆分
 const {
   userValidator,
@@ -29,7 +34,7 @@ router.post(
   cryptPassword,
   register
 );
-router.post("/login", userValidator, verifyLogin, login);
+router.post("/login", userValidator, verifyLogin, login, collectLoginLog);
 router.post("/update", userValidator, cryptPassword, auth, updatePassword);
 router.post("/auth/token", auth, async (ctx, next) => {
   ctx.body = {
@@ -38,5 +43,7 @@ router.post("/auth/token", auth, async (ctx, next) => {
   };
   await next();
 });
+
+router.post("/access/logs", userValidator, verifyLogin, getCollectLog);
 
 module.exports = router;

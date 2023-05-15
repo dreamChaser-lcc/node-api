@@ -19,6 +19,12 @@ const goodRouter = require("../router/goods.router");
 const allRouter = require("../router/index");
 // 统一错误信息处理
 const errHandler = require("./errHandler");
+// 输出埋点日志
+const { logger } = require("../config/config.log");
+
+// logger输出示例
+// logger.info('info', {timeStamp:new Date(),ip:'123'})
+
 const indexRouter = new Router();
 indexRouter.get("/", (ctx, next) => {
   ctx.body = "123";
@@ -61,7 +67,7 @@ const getRouter = new Router();
 indexRouter.get("/get", (ctx, next) => {
   ctx.body = "getapi";
 });
-app.use(getRouter.routes());
+app.use(indexRouter.routes());
 // 统一错误处理
 app.on("error", errHandler);
 

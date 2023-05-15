@@ -49,6 +49,7 @@ class UserController {
           token
         },
       };
+      await next();
     } catch (err) {
       console.error("用户登录失败", err);
     }
