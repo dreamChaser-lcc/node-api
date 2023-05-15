@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 360
+    },
+    "auditLog": "D:\\Project\\LearnDemo\\node-koa2\\src\\config\\logs\\.7ce1314dfad081d13b736f27d6d71a6af11a136a-audit.json",
+    "files": [
+        {
+            "date": 1684160658687,
+            "name": "D:\\Project\\LearnDemo\\node-koa2\\src\\config\\logs\\2023-05-15-access.log",
+            "hash": "e1a8e765cdf4bc5691cd3960559e1e80d1ffc3dd06f899dd23f4e3058016dbca"
+        }
+    ],
+    "hashType": "sha256"
+}
