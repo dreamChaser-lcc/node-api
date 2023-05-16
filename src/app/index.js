@@ -70,5 +70,6 @@ indexRouter.get("/get", (ctx, next) => {
 app.use(indexRouter.routes());
 // 统一错误处理
 app.on("error", errHandler);
+// app.proxy = true;
 
 module.exports = app;
