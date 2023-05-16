@@ -48,10 +48,14 @@ class LogController {
       user_name,
     };
     if (logInfo.ip) {
-      const url = `https://restapi.amap.com/v3/ip?ip=${logInfo.ip}&key=1910b6313e04b966d95a5e69cc2ee50c`;
-      const res = await axios.get(url);
-      logInfo.province = res.data.province;
-      logInfo.city = res.data.city;
+      // const url = `https://restapi.amap.com/v3/ip?ip=${logInfo.ip}&key=1910b6313e04b966d95a5e69cc2ee50c`;
+      const baiduUrl = `https://qifu-api.baidubce.com/ip/geo/v1/district?ip=${logInfo.ip}`
+      const { data } = await axios.get(baiduUrl);
+      if(data.code === 'Success'){
+        logInfo.province = data.data.prov;
+        logInfo.city = data.data.city;
+        logInfo.district = data.data.district;
+      }
     }
     logger.info(logInfo);
     await next();
