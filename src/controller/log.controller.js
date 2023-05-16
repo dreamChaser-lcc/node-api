@@ -67,8 +67,8 @@ class LogController {
       const fileList = getFiles(dir, ".log");
       const logList = [];
       for (let file of fileList) {
-        const res = fs.readFileSync(file, "utf8");
-        const list = res.split("\r\n");
+        const res = fs.readFileSync(file, { encoding: 'utf8' });
+        const list = res.trim().split('\n');
         for (let record of list) {
           if (record) {
             logList.push(JSON.parse(record));
