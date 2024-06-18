@@ -3,8 +3,6 @@ const path = require("path");
 const Koa = require("koa");
 const app = new Koa();
 
-// 解析请求体的npm包
-const koaBody = require("koa-body");
 // 静态资源回显(浏览器回显)
 const koaStatic = require("koa-static");
 // koa-router导入，用于注册中间件
@@ -21,6 +19,8 @@ const allRouter = require("../router/index");
 const errHandler = require("./errHandler");
 // 输出埋点日志
 const { logger } = require("../config/config.log");
+// 二次封装koa-body
+const { wrappedKoaBody } = require("../middleWare/common.middleware");
 
 // logger输出示例
 // logger.info('info', {timeStamp:new Date(),ip:'123'})
@@ -30,26 +30,9 @@ indexRouter.get("/", (ctx, next) => {
   ctx.body = "123";
 });
 
-// 注册中间件,并支持文件上传
-app.use(
-  koaBody({
-    multipart: true,
-    formidable: {
-      // 拼接正确文件上传路径
-      uploadDir: path.join(__dirname, "../upload"),
-      // 保存文件后缀名
-      keepExtensions: true,
-      // 限制上传图片为图片 !!bug未生效
-      filter: ({ name, originalFilename, mimetype }) => {
-        console.log(mimetype);
-        // keep only images
-        return false;
-      },
-    },
-    // 让koa-body支持请求方式，并将请求参数解析到ctx.request.body中
-    parsedMethods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  })
-);
+// 注册解析请求体中间件,并支持文件上传
+app.use(wrappedKoaBody());
+
 /**
  *@param 静态资源存放路径
  */
@@ -70,5 +53,6 @@ indexRouter.get("/get", (ctx, next) => {
 app.use(indexRouter.routes());
 // 统一错误处理
 app.on("error", errHandler);
+// app.proxy = true;
 
 module.exports = app;

@@ -30,6 +30,7 @@ class LogController {
     const res = await axios.get(url);
     return res.data;
   }
+
   /**采集登录日志 */
   async collectLoginLog(ctx, next) {
     const { user_name } = ctx.request.body;
@@ -47,25 +48,30 @@ class LogController {
       user_name,
     };
     if (logInfo.ip) {
-      const url = `https://restapi.amap.com/v3/ip?ip=${logInfo.ip}&key=1910b6313e04b966d95a5e69cc2ee50c`;
-      const { province, city } = await axios.get(url);
-      logInfo.province = province;
-      logInfo.city = city;
+      // const url = `https://restapi.amap.com/v3/ip?ip=${logInfo.ip}&key=1910b6313e04b966d95a5e69cc2ee50c`;
+      const baiduUrl = `https://qifu-api.baidubce.com/ip/geo/v1/district?ip=${logInfo.ip}`
+      const { data } = await axios.get(baiduUrl);
+      if(data.code === 'Success'){
+        logInfo.province = data.data.prov;
+        logInfo.city = data.data.city;
+        logInfo.district = data.data.district;
+      }
     }
     logger.info(logInfo);
     await next();
   }
+
   async getCollectLog(ctx, next) {
-    try{
+    try {
       const dir = path.join(__dirname, "../config/logs");
       const fileList = getFiles(dir, ".log");
-      const logList = []
-      for(let file of fileList){
-        const res = fs.readFileSync(file, "utf8");
-        const list = res.split('\r\n');
-        for(let record of list){
-          if(record){
-            logList.push(JSON.parse(record))
+      const logList = [];
+      for (let file of fileList) {
+        const res = fs.readFileSync(file, { encoding: 'utf8' });
+        const list = res.trim().split('\n');
+        for (let record of list) {
+          if (record) {
+            logList.push(JSON.parse(record));
           }
         }
       }
@@ -74,13 +80,16 @@ class LogController {
         message: "查询成功",
         result: { logList },
       };
-    }catch(err){
-      console.error("🚀 ~ file: log.controller.js:81 ~ 查询log记录错误啦:", err)
+    } catch (err) {
+      console.error(
+        "🚀 ~ file: log.controller.js:81 ~ 查询log记录错误啦:",
+        err
+      );
       const result = {
         code: "10003",
         message: "查询log记录错误啦!!!快去查看node日志",
       };
-      
+
       ctx.app.emit("error", result, ctx);
     }
   }
