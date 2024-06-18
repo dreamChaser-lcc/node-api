@@ -65,8 +65,8 @@ class UtilsController {
         const mergeFilePath = path.resolve(__dirname, `../upload/slice_merge_${fileName}.${suffix}`);
         const url = await appendFilesSync(mergeFilePath, fileList);
         if(url){
-          // 因为node静态目录是upload，暂时写死吧
-          const staticUrl = `/upload/slice_merge_${fileName}.${suffix}`;
+          // 因为node静态目录是/upload，暂时写死吧
+          const staticUrl = `/slice_merge_${fileName}.${suffix}`;
           response.result.url = staticUrl;
         }
       }
